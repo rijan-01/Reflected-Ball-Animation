@@ -1,0 +1,78 @@
+<!-- Vacation Homework by Rijan Pande -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reflected Circles Animation</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #222;
+            height: 100%;
+        }
+        canvas {
+            display: block;
+            background: #222;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas"></canvas>
+<script>
+const canvas = document.getElementById('myCanvas'); 
+const ctx = canvas.getContext('2d');  // Get 2D drawing context (used to draw shapes)
+
+ // Function to resize the canvas to fit the window
+function resize() {
+    canvas.width = window.innerWidth;    // Make canvas full width
+    canvas.height = window.innerHeight; // Make canvas full height
+}
+resize(); // Call it once at start
+window.addEventListener('resize', resize); // Call it again whenever window size changes
+
+// Circle properties
+const radius = 40;
+let x = radius + 10, y = radius + 10;  // Initial position of circle
+let vx = 4, vy = 3;                   // Speed of movement (x-direction, y-direction)
+
+  // Function to draw a circle at given coordinates
+ // cx, cy = center coordinates
+// color = fill color (default red)
+
+function drawCircle(cx, cy, color = "#ff5252") {
+    ctx.beginPath();                           // Start a new shape
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);  // Draw circle
+    ctx.fillStyle = color;                   // Set circle color
+    ctx.shadowColor = color;                // Add glowing shadow color
+    ctx.shadowBlur = 20;                   // Shadow blur strength
+    ctx.fill();                           // Fill the circle
+    ctx.shadowBlur = 0;                  // Remove shadow (for next drawings)
+} 
+
+// Main animation loop
+// This function updates circle position and redraws it continuously
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas before drawing new frame
+
+    // Draw one moving ball
+    drawCircle(x, y, "#ff5252");
+
+    // Update circle position (movement)
+    x += vx;
+    y += vy;
+
+    // Bounce off left/right walls
+    if (x + radius > canvas.width || x - radius < 0) vx *= -1;
+
+    // Bounce off top/bottom walls
+    if (y + radius > canvas.height || y - radius < 0) vy *= -1;
+
+    requestAnimationFrame(animate); // Call animate() again for next frame
+}
+
+animate(); // Start animation
+</script>
+</body>
+</html>
